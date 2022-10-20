@@ -61,6 +61,25 @@ function cleanUrl(url) {
 
 
 let COUNTS = {};
+const BLACKLISTED_WEBSITES = [
+  "google.com",
+  "notion.so",
+  "stackoverflow.com",
+  "youtube.com",
+  "messenger.com",
+  "calendly.com",
+  "github.com",
+  "slack.com",
+  "chrome.com",
+  "linkedin.com",
+  "facebook.com",
+  "twitter.com",
+  "mozilla.org",
+  "amazon.com",
+  "goodreads.com",
+  "blinkist.com",
+  "reddit.com",
+];
 
 
 // fires when tab is updated
@@ -85,6 +104,12 @@ function onTabLoad(tab) {
       return;
     }
     if (!tab.id) {
+      return;
+    }
+
+    // If the url is in the blacklist, don't need to fetch it
+    if (BLACKLISTED_WEBSITES.some((website) => tab.url.includes(website))) {
+      setBadge(0);
       return;
     }
 
